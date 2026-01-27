@@ -15,7 +15,7 @@
 <script>
 async function cek() {
   const nomor = document.getElementById("nomor").value;
-  const res = await fetch("abc");
+  const res = await fetch("https://docs.google.com/spreadsheets/d/e/2PACX-1vT1mfNTxqnNzlVBZpwWhoGKAt23iRiCOlBtZ23v4VGOnKTscxuNsY0MY-5Dp2qlvzhDAwz355hp0jmD/pub?gid=0&single=true&output=csv");
   const data = await res.text();
   const rows = data.split("\n");
 
@@ -41,3 +41,4 @@ async function cek() {
 
 </body>
 </html>
+

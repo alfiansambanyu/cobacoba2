@@ -149,13 +149,6 @@ footer {
 
 <script>
 async function cekLayanan()
-<script>
-document.getElementById("nomor").addEventListener("keypress", function(e) {
-  if (e.key === "Enter") {
-    cekLayanan();
-  }
-});
-</script>
 
  {
   const nomor = document.getElementById("nomor").value.trim();
@@ -216,7 +209,14 @@ document.getElementById("nomor").addEventListener("keypress", function(e) {
     hasil.innerHTML = "<b>Nomor layanan tidak ditemukan.</b>";
   }
 }
+<script>
+document.getElementById("nomor").addEventListener("keypress", function(e) {
+  if (e.key === "Enter") {
+    cekLayanan();
+  }
+});
 </script>
+
 
 </body>
 </html>

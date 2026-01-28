@@ -34,7 +34,6 @@ header h2 {
   font-size: 19px;
   margin: 5px 0;
 }
-
 header p {
   font-size: 13px;
   margin: 0;
@@ -50,8 +49,8 @@ header p {
   box-shadow: 0 2px 6px rgba(0,0,0,0.08);
 }
 
-h2 {
-  font-size: 16px;
+h3 {
+  font-size: 17px;
   margin-bottom: 10px;
   border-bottom: 2px solid #0b3c5d;
   padding-bottom: 6px;
@@ -75,6 +74,7 @@ button {
   font-size: 16px;
   border-radius: 4px;
   margin-top: 10px;
+  cursor: pointer;
 }
 
 button:hover {
@@ -129,20 +129,19 @@ footer {
 
 <header>
   <img src="Logo-Kabupaten-Bojonegoro.png" alt="Logo Instansi">
-  <h1>DINAS PERDAGANGAN, KOPERASI DAN USAHA MIKRO</h1>
+  <h1>DINAS PERDAGANGAN, KOPERASI DAN USAHA MIKRO KABUPATEN BOJONEGORO</h1>
   <h2>UPTD METROLOGI LEGAL</h2>
-  <p>Sistem Informasi Layanan Tera/Tera Ulang</p>
+  <p>Sistem Informasi Progres Layanan Publik</p>
 </header>
 
 <div class="container">
   <h3>Cek Status Layanan</h3>
 
   <input 
-  type="text" 
-  id="nomor" 
-  placeholder="Nomor Layanan"
-  onkeydown="if(event.key === 'Enter') cekLayanan();"
->
+    type="text" 
+    id="nomor" 
+    placeholder="Nomor Layanan"
+  >
 
   <button onclick="cekLayanan()">Cari</button>
 
@@ -150,13 +149,11 @@ footer {
 </div>
 
 <footer>
-  © 2026 Pemerintah Kabupaten Bojonegoro • Informasi Publik
+  © 2026 Pemerintah Daerah • Informasi Publik
 </footer>
 
 <script>
-async function cekLayanan()
-
- {
+async function cekLayanan() {
   const nomor = document.getElementById("nomor").value.trim();
   const hasil = document.getElementById("hasil");
 
@@ -165,7 +162,7 @@ async function cekLayanan()
     return;
   }
 
-  const res = await fetch("https://docs.google.com/spreadsheets/d/e/2PACX-1vT1mfNTxqnNzlVBZpwWhoGKAt23iRiCOlBtZ23v4VGOnKTscxuNsY0MY-5Dp2qlvzhDAwz355hp0jmD/pub?gid=0&single=true&output=csv");
+  const res = await fetch("GANTI_DENGAN_LINK_CSV_SHEETS");
   const text = await res.text();
   const rows = text.split("\n");
 
@@ -186,11 +183,6 @@ async function cekLayanan()
           <div class="value">${col[2]}</div>
         </div>
 
-	<div class="item">
-          <div class="label">Lokasi</div>
-          <div class="value">${col[3]}</div>
-        </div>
-
         <div class="item">
           <div class="label">Status</div>
           <div class="value status ${col[4]}">${col[4]}</div>
@@ -199,6 +191,11 @@ async function cekLayanan()
         <div class="item">
           <div class="label">Tanggal</div>
           <div class="value">${col[1]}</div>
+        </div>
+
+	<div class="item">
+          <div class="label">Lokasi</div>
+          <div class="value">${col[3]}</div>
         </div>
 
         <div class="item">
@@ -214,10 +211,15 @@ async function cekLayanan()
     hasil.style.display = "block";
     hasil.innerHTML = "<b>Nomor layanan tidak ditemukan.</b>";
   }
+}
 
+/* TEKAN ENTER LANGSUNG CARI */
+document.getElementById("nomor").addEventListener("keypress", function(e) {
+  if (e.key === "Enter") {
+    cekLayanan();
+  }
 });
 </script>
-
 
 </body>
 </html>

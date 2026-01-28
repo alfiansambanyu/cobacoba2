@@ -11,35 +11,47 @@ body {
   background: #f4f6f9;
   margin: 0;
   color: #333;
+  text-align: center;
 }
 
 header {
   background: #0b3c5d;
   color: #fff;
-  padding: 20px;
+  padding: 25px 15px;
+}
+
+header img {
+  height: 80px;
+  margin-bottom: 10px;
 }
 
 header h1 {
-  margin: 0;
+  margin: 5px 0;
   font-size: 22px;
+  letter-spacing: 0.5px;
+}
+  header h2 {
+  margin: 5px 0;
+  font-size: 20px;
+  letter-spacing: 0.5px;
 }
 
 header p {
-  margin: 4px 0 0;
+  margin: 0;
   font-size: 14px;
   opacity: 0.9;
 }
 
 .container {
-  max-width: 720px;
+  max-width: 600px;
   margin: 30px auto;
   background: #fff;
-  padding: 25px;
+  padding: 30px;
   border-radius: 6px;
   box-shadow: 0 2px 8px rgba(0,0,0,0.08);
 }
 
-h2 {
+h3 {
   font-size: 18px;
   border-bottom: 2px solid #0b3c5d;
   padding-bottom: 8px;
@@ -48,10 +60,11 @@ h2 {
 input {
   width: 100%;
   padding: 12px;
-  margin-top: 10px;
+  margin-top: 15px;
   font-size: 16px;
   border: 1px solid #ccc;
   border-radius: 4px;
+  text-align: center;
 }
 
 button {
@@ -71,35 +84,28 @@ button:hover {
 }
 
 #hasil {
-  margin-top: 20px;
-  padding: 15px;
+  margin-top: 25px;
+  padding: 20px;
   border-radius: 4px;
   background: #f8f9fa;
-  border-left: 4px solid #0b3c5d;
+  border: 1px solid #ddd;
+  display: none;
 }
 
 .status {
   font-weight: bold;
+  font-size: 18px;
 }
 
-.status.Selesai {
-  color: green;
-}
-
-.status.Diproses {
-  color: orange;
-}
-
-.status.Ditolak {
-  color: red;
-}
+.status.Selesai { color: green; }
+.status.Diproses { color: orange; }
+.status.Ditolak { color: red; }
 
 footer {
   margin-top: 40px;
   padding: 15px;
   background: #eee;
   font-size: 13px;
-  text-align: center;
   color: #555;
 }
 </style>
@@ -108,24 +114,25 @@ footer {
 <body>
 
 <header>
+  <img src="logo.png" alt="Logo Instansi">
   <h1>PEMERINTAH KABUPATEN BOJONEGORO</h1>
   <h1>DINAS PERDAGANGAN, KOPERASI DAN USAHA MIKRO</h1>
-  <h1>UPTD METROLOGI LEGAL</h1>
-  <p>Sistem Informasi Progres Layanan Publik</p>
+  <h2>UPTD METROLOGI LEGAL</h2>
+  <p>Sistem Informasi Progres Layanan Tera/Tera Ulang</p>
 </header>
 
 <div class="container">
-  <h2>Cek Status Layanan</h2>
-  <p>Masukkan <b>Nomor Layanan</b> untuk mengetahui progres permohonan Anda.</p>
+  <h3>Cek Status Layanan</h3>
+  <p>Masukkan <b>Nomor Layanan</b> Anda</p>
 
   <input type="text" id="nomor" placeholder="Contoh: 2025-001">
-  <button onclick="cekLayanan()">Cari Status</button>
+  <button onclick="cekLayanan()">Cari</button>
 
-  <div id="hasil" style="display:none;"></div>
+  <div id="hasil"></div>
 </div>
 
 <footer>
-  © 2026 Dinas Perdagangan, Koperasi dan Usaha Mikro • Informasi ini bersifat transparansi publik
+  © 2026 Pemerintah Kabupaten Bojonegoro • Informasi Bersifat Publik
 </footer>
 
 <script>
@@ -134,12 +141,12 @@ async function cekLayanan() {
   const hasil = document.getElementById("hasil");
 
   if (!nomor) {
-    alert("Silakan masukkan nomor layanan");
+    alert("Nomor layanan wajib diisi");
     return;
   }
 
-  const response = await fetch("https://docs.google.com/spreadsheets/d/e/2PACX-1vT1mfNTxqnNzlVBZpwWhoGKAt23iRiCOlBtZ23v4VGOnKTscxuNsY0MY-5Dp2qlvzhDAwz355hp0jmD/pub?gid=0&single=true&output=csv");
-  const text = await response.text();
+  const res = await fetch("https://docs.google.com/spreadsheets/d/e/2PACX-1vT1mfNTxqnNzlVBZpwWhoGKAt23iRiCOlBtZ23v4VGOnKTscxuNsY0MY-5Dp2qlvzhDAwz355hp0jmD/pub?gid=0&single=true&output=csv");
+  const text = await res.text();
   const rows = text.split("\n");
 
   let ditemukan = false;
@@ -149,11 +156,15 @@ async function cekLayanan() {
     if (col[0] === nomor) {
       hasil.style.display = "block";
       hasil.innerHTML = `
-        <p><b>Nomor Layanan:</b> ${col[0]}</p>
-        <p><b>Tanggal:</b> ${col[1]}</p>
-        <p><b>Jenis Layanan:</b> <span class="status ${col[2]}">${col[2]}</span></p>
-        <p><b>Lokasi:</b> ${col[3]}</p>
-        <p><b>Status:</b> ${col[4]}</p>
+        <p><b>Nomor Layanan</b></p>
+        <h3>${col[0]}</h3>
+        <p><b>Jenis Layanan</b><br>${col[2]}</p>
+        <p><b>Status</b><br>
+          <span class="status ${col[4]}">${col[4]}</span>
+        </p>
+        <p><b>Tanggal</b><br>${col[1]}</p>
+        <p><b>Lokasi</b><br>${col[3]}</p>
+        <p><b>Keterangan</b><br>${col[5]}</p>
       `;
       ditemukan = true;
     }

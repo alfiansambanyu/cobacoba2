@@ -14,76 +14,76 @@ body {
   text-align: center;
 }
 
+/* HEADER */
 header {
   background: #0b3c5d;
   color: #fff;
-  padding: 20px 10px;
+  padding: 18px 10px;
 }
 
 header img {
-  height: 70px;
-  margin-bottom: 8px;
+  height: 65px;
+  margin-bottom: 6px;
 }
 
 header h1 {
   font-size: 22px;
-  margin: 5px 0;
+  margin: 4px 0;
+}
+header h2 {
+  font-size: 18px;
+  margin: 4px 0;
 }
 
-header h2 {
-  font-size: 19px;
-  margin: 5px 0;
-}
 header p {
-  font-size: 13px;
+  font-size: 12px;
   margin: 0;
   opacity: 0.9;
 }
 
+/* CONTAINER */
 .container {
-  max-width: 640px;
-  margin: 20px auto;
+  max-width: 100%;
+  margin: 12px;
   background: #fff;
-  padding: 20px;
+  padding: 16px;
   border-radius: 6px;
   box-shadow: 0 2px 6px rgba(0,0,0,0.08);
 }
 
 h3 {
-  font-size: 17px;
+  font-size: 16px;
   margin-bottom: 10px;
   border-bottom: 2px solid #0b3c5d;
   padding-bottom: 6px;
 }
 
+/* INPUT */
 input {
   width: 100%;
   padding: 12px;
-  font-size: 16px;
+  font-size: 15px;
   border: 1px solid #ccc;
   border-radius: 4px;
   text-align: center;
 }
 
+/* BUTTON */
 button {
   width: 100%;
   background: #0b3c5d;
   color: #fff;
   padding: 12px;
   border: none;
-  font-size: 16px;
+  font-size: 15px;
   border-radius: 4px;
-  margin-top: 10px;
-  cursor: pointer;
+  margin-top: 8px;
 }
 
-button:hover {
-  background: #092f4a;
-}
-
+/* HASIL */
 #hasil {
-  margin-top: 20px;
-  padding: 18px;
+  margin-top: 16px;
+  padding: 14px;
   border-radius: 4px;
   background: #f8f9fa;
   border: 1px solid #ddd;
@@ -91,35 +91,43 @@ button:hover {
   text-align: left;
 }
 
+/* ITEM */
 .item {
-  margin-bottom: 14px;
+  margin-bottom: 12px;
 }
 
 .label {
-  font-size: 13px;
+  font-size: 12px;
   color: #555;
+  margin-bottom: 2px;
 }
 
 .value {
-  font-size: 16px;
+  font-size: 15px;
   font-weight: bold;
-  word-wrap: break-word;
-  white-space: pre-wrap;
+  line-height: 1.4;
+
+  /* INI KUNCI AGAR TEKS PANJANG TIDAK TERPOTONG */
+  white-space: normal;
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
+/* STATUS */
 .status {
-  font-size: 18px;
+  font-size: 16px;
 }
 
 .status.Selesai { color: green; }
 .status.Diproses { color: orange; }
 .status.Ditolak { color: red; }
 
+/* FOOTER */
 footer {
-  margin-top: 30px;
-  padding: 12px;
+  margin-top: 20px;
+  padding: 10px;
   background: #eee;
-  font-size: 12px;
+  font-size: 11px;
   color: #555;
 }
 </style>
@@ -128,8 +136,9 @@ footer {
 <body>
 
 <header>
-  <img src="Logo-Kabupaten-Bojonegoro.png" alt="Logo Instansi">
-  <h1>DINAS PERDAGANGAN, KOPERASI DAN USAHA MIKRO KABUPATEN BOJONEGORO</h1>
+  <img src="logo.png" alt="Logo Instansi">
+  <h1>DINAS PERDAGANGAN, KOPERASI DAN USAHA MIKRO</h1>
+  <h1>KABUPATEN BOJONEGORO</h1>
   <h2>UPTD METROLOGI LEGAL</h2>
   <p>Sistem Informasi Progres Layanan Publik</p>
 </header>
@@ -137,9 +146,9 @@ footer {
 <div class="container">
   <h3>Cek Status Layanan</h3>
 
-  <input 
-    type="text" 
-    id="nomor" 
+  <input
+    type="text"
+    id="nomor"
     placeholder="Nomor Layanan"
   >
 
@@ -149,7 +158,7 @@ footer {
 </div>
 
 <footer>
-  © 2026 Pemerintah Daerah • Informasi Publik
+  © 2026 Pemerintah Kabupaten Bojonegoro • Informasi Publik
 </footer>
 
 <script>
@@ -192,8 +201,8 @@ async function cekLayanan() {
           <div class="label">Tanggal</div>
           <div class="value">${col[1]}</div>
         </div>
-
-	<div class="item">
+		
+		<div class="item">
           <div class="label">Lokasi</div>
           <div class="value">${col[3]}</div>
         </div>

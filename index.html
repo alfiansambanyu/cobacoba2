@@ -137,7 +137,13 @@ footer {
 <div class="container">
   <h3>Cek Status Layanan</h3>
 
-  <input type="text" id="nomor" placeholder="Nomor Layanan">
+  <input 
+  type="text" 
+  id="nomor" 
+  placeholder="Nomor Layanan"
+  onkeydown="if(event.key === 'Enter') cekLayanan();"
+>
+
   <button onclick="cekLayanan()">Cari</button>
 
   <div id="hasil"></div>
@@ -208,12 +214,7 @@ async function cekLayanan()
     hasil.style.display = "block";
     hasil.innerHTML = "<b>Nomor layanan tidak ditemukan.</b>";
   }
-}
-<script>
-document.getElementById("nomor").addEventListener("keypress", function(e) {
-  if (e.key === "Enter") {
-    cekLayanan();
-  }
+
 });
 </script>
 

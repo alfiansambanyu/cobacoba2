@@ -148,7 +148,16 @@ footer {
 </footer>
 
 <script>
-async function cekLayanan() {
+async function cekLayanan()
+<script>
+document.getElementById("nomor").addEventListener("keypress", function(e) {
+  if (e.key === "Enter") {
+    cekLayanan();
+  }
+});
+</script>
+
+ {
   const nomor = document.getElementById("nomor").value.trim();
   const hasil = document.getElementById("hasil");
 

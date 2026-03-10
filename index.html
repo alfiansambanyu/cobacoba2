@@ -3,260 +3,387 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Cek Progres Layanan Publik</title>
+<title>Cek Status Layanan Tera</title>
 
 <style>
-body {
-  font-family: Arial, Helvetica, sans-serif;
-  background: #f4f6f9;
-  margin: 0;
-  color: #333;
+
+*{
+box-sizing:border-box;
+}
+
+body{
+margin:0;
+font-family:Segoe UI,Roboto,Arial;
+background:linear-gradient(135deg,#5aa9e6,#3b82c4);
+min-height:100vh;
+color:#333;
 }
 
 /* HEADER */
-header {
-  background: #509dd4;
-  color: #fff;
-  padding: 16px 10px;
-  text-align: center;
+
+header{
+text-align:center;
+padding:25px 10px;
+color:white;
 }
 
-header img {
-  height: 60px;
-  margin-bottom: 6px;
+header img{
+height:70px;
+margin-bottom:10px;
 }
 
-header h1 {
-  font-size: 18px;
-  margin: 4px 0;
+header h1{
+margin:2px;
+font-size:20px;
 }
 
-header p {
-  font-size: 12px;
-  margin: 0;
-  opacity: 0.9;
+header p{
+margin-top:5px;
+opacity:0.9;
+font-size:13px;
 }
 
-/* CONTAINER */
-.container {
-  margin: 12px;
-  background: #fff;
-  padding: 16px;
-  border-radius: 6px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+/* CARD */
+
+.card{
+background:white;
+max-width:520px;
+margin:auto;
+border-radius:12px;
+padding:25px;
+box-shadow:0 10px 25px rgba(0,0,0,0.15);
 }
 
-h2 {
-  font-size: 16px;
-  border-bottom: 2px solid #509dd4;
-  padding-bottom: 6px;
+/* TITLE */
+
+.title{
+font-size:18px;
+font-weight:bold;
+margin-bottom:10px;
+border-bottom:3px solid #3b82c4;
+padding-bottom:6px;
 }
 
 /* INPUT */
-input, button {
-  width: 100%;
-  padding: 12px;
-  font-size: 15px;
-  margin-top: 8px;
+
+input{
+width:100%;
+padding:13px;
+font-size:16px;
+border-radius:8px;
+border:1px solid #ccc;
+margin-top:10px;
 }
 
-input {
-  border: 1px solid #ccc;
-  border-radius: 4px;
+/* BUTTON */
+
+button{
+width:100%;
+padding:13px;
+margin-top:12px;
+border:none;
+border-radius:8px;
+background:#3b82c4;
+color:white;
+font-size:16px;
+font-weight:bold;
+cursor:pointer;
+transition:0.3s;
 }
 
-button {
-  background: #509dd4;
-  color: #fff;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
+button:hover{
+background:#2a6da8;
 }
 
-/* HASIL */
-#hasil {
-  margin-top: 16px;
-  padding: 14px;
-  background: #f8f9fa;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  display: none;
+/* RESULT */
+
+#hasil{
+margin-top:20px;
+display:none;
 }
 
-.item {
-  margin-bottom: 14px;
+/* INFO ROW */
+
+.row{
+margin-bottom:14px;
 }
 
-.label {
-  font-size: 12px;
-  color: #555;
+.label{
+font-size:12px;
+color:#666;
 }
 
-.value {
-  font-size: 15px;
-  line-height: 1.5;
-  white-space: normal;
-  word-break: break-word;
-  overflow-wrap: break-word;
-  max-width: 100%;
-  font-weight: bold;
+.value{
+font-size:15px;
+font-weight:bold;
+margin-top:3px;
 }
 
-.item:last-child .value {
-  font-weight: normal;
-  background: #fff;
-  border: 1px solid #ddd;
-  padding: 10px;
-  border-radius: 4px;
+/* STATUS BADGE */
+
+.status{
+display:inline-block;
+padding:6px 12px;
+border-radius:20px;
+font-size:13px;
+font-weight:bold;
 }
 
-.status.Selesai { color: green; }
-.status.Diproses { color: orange; }
-.status.Ditolak { color: red; }
-
-/* TOMBOL GOOGLE FORM */
-.form-section {
-  margin: 16px 12px 0;
+.Selesai{
+background:#d4edda;
+color:#1e7e34;
 }
 
-.form-section a {
-  display: block;
-  text-align: center;
-  background: #2e7d32;
-  color: #fff;
-  padding: 12px;
-  border-radius: 4px;
-  text-decoration: none;
-  font-size: 14px;
-  font-weight: bold;
+.Diproses{
+background:#fff3cd;
+color:#856404;
 }
 
-.form-section a:hover {
-  background: #256628;
+.Ditolak{
+background:#f8d7da;
+color:#721c24;
+}
+
+/* LOADING */
+
+.loading{
+text-align:center;
+padding:15px;
+}
+
+.spinner{
+width:30px;
+height:30px;
+border:4px solid #ddd;
+border-top:4px solid #3b82c4;
+border-radius:50%;
+animation:spin 1s linear infinite;
+margin:auto;
+}
+
+@keyframes spin{
+0%{transform:rotate(0deg)}
+100%{transform:rotate(360deg)}
+}
+
+/* FORM BUTTON */
+
+.form-btn{
+margin-top:20px;
+text-align:center;
+}
+
+.form-btn a{
+display:block;
+background:#2e7d32;
+color:white;
+padding:14px;
+border-radius:8px;
+text-decoration:none;
+font-weight:bold;
+transition:0.3s;
+}
+
+.form-btn a:hover{
+background:#1f5e24;
 }
 
 /* FOOTER */
-footer {
-  margin: 18px 0;
-  text-align: center;
-  font-size: 11px;
-  color: #555;
+
+footer{
+text-align:center;
+color:white;
+font-size:12px;
+margin-top:20px;
+padding-bottom:20px;
 }
 
-/* MOBILE */
-@media (max-width: 480px) {
-  .container {
-    padding: 14px 12px;
-  }
-  .value {
-    font-size: 14px;
-  }
-}
 </style>
 </head>
 
 <body>
 
 <header>
-  <img src="Logo-Kabupaten-Bojonegoro.png" alt="Logo Instansi">
-  <h1>DINAS PERDAGANGAN, KOPERASI DAN USAHA MIKRO</h1>
-  <h1>UPTD METROLOGI LEGAL</h1>
-  <p>Sistem Informasi Layanan Tera/Tera Ulang</p>
+
+<img src="Logo-Kabupaten-Bojonegoro.png">
+
+<h1>DINAS PERDAGANGAN</h1>
+<h1>UPTD METROLOGI LEGAL</h1>
+
+<p>Sistem Informasi Layanan Tera / Tera Ulang</p>
+
 </header>
 
-<div class="container">
-  <h2>Cek Status Layanan</h2>
-  <input id="nomor" placeholder="Masukkan Nomor Layanan">
-  <button onclick="cekLayanan()">Cari</button>
-  <div id="hasil"></div>
+<div class="card">
+
+<div class="title">Cek Status Layanan</div>
+
+<input id="nomor" placeholder="Masukkan Nomor Layanan">
+
+<button onclick="cekLayanan()">Cari Status</button>
+
+<div id="hasil"></div>
+
 </div>
 
-<!-- TOMBOL GOOGLE FORM -->
-<div class="form-section">
-  <a href="https://forms.gle/xixjsguVMUgHeTwZ7">
-    Ajukan Permohonan Layanan Tera/Tera Ulang Disini!
-  </a>
+<div class="card form-btn">
+
+<a href="https://forms.gle/xixjsguVMUgHeTwZ7">
+Ajukan Permohonan Tera / Tera Ulang
+</a>
+
 </div>
 
 <footer>
-  © 2026 Pemerintah Daerah Kabupaten Bojonegoro • Informasi Publik
+© 2026 Pemerintah Kabupaten Bojonegoro
 </footer>
 
 <script>
-function parseCSV(text) {
-  const rows = [];
-  let row = [];
-  let current = "";
-  let insideQuotes = false;
 
-  for (let i = 0; i < text.length; i++) {
-    const char = text[i];
-    const next = text[i + 1];
+function parseCSV(text){
 
-    if (char === '"' && insideQuotes && next === '"') {
-      current += '"';
-      i++;
-    } else if (char === '"') {
-      insideQuotes = !insideQuotes;
-    } else if (char === "," && !insideQuotes) {
-      row.push(current);
-      current = "";
-    } else if (char === "\n" && !insideQuotes) {
-      row.push(current);
-      rows.push(row);
-      row = [];
-      current = "";
-    } else {
-      current += char;
-    }
-  }
+const rows=[]
+let row=[]
+let current=""
+let insideQuotes=false
 
-  row.push(current);
-  rows.push(row);
-  return rows;
+for(let i=0;i<text.length;i++){
+
+const char=text[i]
+const next=text[i+1]
+
+if(char=='"' && insideQuotes && next=='"'){
+current+='"'
+i++
 }
 
-async function cekLayanan() {
-  const nomor = document.getElementById("nomor").value.trim();
-  const hasil = document.getElementById("hasil");
-
-  if (!nomor) {
-    alert("Nomor layanan wajib diisi");
-    return;
-  }
-
-  const res = await fetch("https://docs.google.com/spreadsheets/d/e/2PACX-1vSabRsCKk4xRAHNzpX25t5Bs2JAA-w1l2sycvl4AIQaYTe7BFFwBjQTiyxReGp3jp10u1PAVHNEK2bu/pub?gid=1685468197&single=true&output=csv");
-  const text = await res.text();
-  const data = parseCSV(text);
-
-  let ditemukan = false;
-
-  for (let i = 1; i < data.length; i++) {
-    if (data[i][0] === nomor) {
-      hasil.style.display = "block";
-      hasil.innerHTML = `
-        <div class="item"><div class="label">Nomor Layanan</div><div class="value">${data[i][0]}</div></div>
-        <div class="item"><div class="label">Jenis Layanan</div><div class="value">${data[i][4]}</div></div>
-        <div class="item"><div class="label">Status</div><div class="value status ${data[i][5]}">${data[i][4]}</div></div>
-        <div class="item"><div class="label">Tanggal Diterima</div><div class="value">${data[i][1]}</div></div>
-        <div class="item"><div class="label">Lokasi</div><div class="value">${data[i][3]}</div></div>
-        <div class="item"><div class="label">Keterangan</div><div class="value">${data[i][6]}</div></div>
-      `;
-      ditemukan = true;
-      break;
-    }
-  }
-
-  if (!ditemukan) {
-    hasil.style.display = "block";
-    hasil.innerHTML = "<b>Nomor layanan tidak ditemukan.</b>";
-  }
+else if(char=='"'){
+insideQuotes=!insideQuotes
 }
 
-/* ENTER = CARI */
-document.getElementById("nomor").addEventListener("keydown", e => {
-  if (e.key === "Enter") cekLayanan();
-});
+else if(char=="," && !insideQuotes){
+row.push(current)
+current=""
+}
+
+else if(char=="\n" && !insideQuotes){
+row.push(current)
+rows.push(row)
+row=[]
+current=""
+}
+
+else{
+current+=char
+}
+
+}
+
+row.push(current)
+rows.push(row)
+
+return rows
+
+}
+
+async function cekLayanan(){
+
+const nomor=document.getElementById("nomor").value.trim().toLowerCase()
+
+const hasil=document.getElementById("hasil")
+
+if(!nomor){
+alert("Nomor layanan harus diisi")
+return
+}
+
+hasil.style.display="block"
+
+hasil.innerHTML=`
+<div class="loading">
+<div class="spinner"></div>
+<p>Mencari data...</p>
+</div>
+`
+
+const url="https://docs.google.com/spreadsheets/d/e/2PACX-1vSabRsCKk4xRAHNzpX25t5Bs2JAA-w1l2sycvl4AIQaYTe7BFFwBjQTiyxReGp3jp10u1PAVHNEK2bu/pub?gid=1685468197&single=true&output=csv"
+
+const res=await fetch(url)
+
+const text=await res.text()
+
+const data=parseCSV(text)
+
+let ditemukan=false
+
+for(let i=1;i<data.length;i++){
+
+let nomorSheet=(data[i][0]||"").trim().toLowerCase()
+
+if(nomorSheet===nomor){
+
+hasil.innerHTML=`
+
+<div class="row">
+<div class="label">Nomor Layanan</div>
+<div class="value">${data[i][0]}</div>
+</div>
+
+<div class="row">
+<div class="label">Jenis Layanan</div>
+<div class="value">${data[i][2]}</div>
+</div>
+
+<div class="row">
+<div class="label">Status</div>
+<div class="value">
+<span class="status ${data[i][4]}">${data[i][4]}</span>
+</div>
+</div>
+
+<div class="row">
+<div class="label">Tanggal</div>
+<div class="value">${data[i][1]}</div>
+</div>
+
+<div class="row">
+<div class="label">Lokasi</div>
+<div class="value">${data[i][3]}</div>
+</div>
+
+<div class="row">
+<div class="label">Keterangan</div>
+<div class="value">${data[i][5]}</div>
+</div>
+
+`
+
+ditemukan=true
+
+break
+
+}
+
+}
+
+if(!ditemukan){
+
+hasil.innerHTML="<b>Nomor layanan tidak ditemukan</b>"
+
+}
+
+}
+
+document.getElementById("nomor").addEventListener("keydown",function(e){
+
+if(e.key==="Enter"){
+
+cekLayanan()
+
+}
+
+})
+
 </script>
 
 </body>

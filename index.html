@@ -1,4 +1,5 @@
-<!doctype html>
+```html
+<!DOCTYPE html>
 <html lang="id">
 
 <head>
@@ -10,8 +11,6 @@
 
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
-
-<!-- CSV parser -->
 <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
 
 <style>
@@ -107,7 +106,7 @@ Cari
 
 <i data-lucide="inbox" style="width:40px;height:40px;margin:auto;"></i>
 
-<p>Masukkan Nomor layanan</p>
+<p>Masukkan nomor layanan untuk melihat status</p>
 
 </div>
 
@@ -129,9 +128,9 @@ Data Semua Layanan
 
 <tr class="border-b bg-blue-50">
 
-<th class="text-left p-2">Nomor</th>
-<th class="text-left p-2">Nama</th>
-<th class="text-left p-2">Jenis</th>
+<th class="text-left p-2">Nomor Layanan</th>
+<th class="text-left p-2">Nama Pemilik</th>
+<th class="text-left p-2">Jenis Layanan</th>
 <th class="text-left p-2">Status</th>
 
 </tr>
@@ -141,7 +140,7 @@ Data Semua Layanan
 <tbody id="data-table-body">
 
 <tr>
-<td colspan="4" class="text-center p-4">Loading...</td>
+<td colspan="4" class="text-center p-4">Loading data...</td>
 </tr>
 
 </tbody>
@@ -167,12 +166,11 @@ function loadSpreadsheetData(){
 Papa.parse(sheetURL,{
 
 download:true,
-
 header:true,
 
 complete:function(results){
 
-allData=results.data;
+allData=results.data.filter(row=>row.nomor_layanan);
 
 renderTable();
 
@@ -190,7 +188,6 @@ const tbody=document.getElementById("data-table-body");
 if(allData.length===0){
 
 tbody.innerHTML="<tr><td colspan='4' class='text-center p-4'>Tidak ada data</td></tr>";
-
 return;
 
 }
@@ -199,11 +196,11 @@ tbody.innerHTML=allData.map(item=>`
 
 <tr class="border-b hover:bg-blue-50">
 
-<td class="p-2 font-semibold">${item.Nomor Layanan || ""}</td>
+<td class="p-2 font-semibold">${item.nomor_layanan || ""}</td>
 
-<td class="p-2">${item.Nama Pemilik || ""}</td>
+<td class="p-2">${item.nama_pemilik || ""}</td>
 
-<td class="p-2">${item.Jenis Layanan || ""}</td>
+<td class="p-2">${item.jenis_layanan || ""}</td>
 
 <td class="p-2">
 
@@ -226,18 +223,17 @@ lucide.createIcons();
 
 document.getElementById("search-btn").addEventListener("click",()=>{
 
-const value=document.getElementById("search-input").value.toLowerCase();
+const keyword=document.getElementById("search-input").value.toLowerCase();
 
 const container=document.getElementById("results-container");
 
-const found=allData.filter(d=>
-(d.nomor_layanan||"").toLowerCase().includes(value)
+const found=allData.filter(item=>
+(item.nomor_layanan||"").toLowerCase().includes(keyword)
 );
 
 if(found.length===0){
 
 container.innerHTML="<p class='text-center text-gray-500'>Data tidak ditemukan</p>";
-
 return;
 
 }
@@ -246,19 +242,25 @@ container.innerHTML=found.map(item=>`
 
 <div class="card-result">
 
-<p><b>Nomor:</b> ${item.Nomor Layanan}</p>
-
-<p><b>Nama:</b> ${item.Nama Pemilik}</p>
-
-<p><b>Lokasi:</b> ${item.Lokasi}</p>
-
-<p><b>Jenis:</b> ${item.Jenis Layanan}</p>
-
-<p><b>Status:</b> ${item.Status}</p>
+<p><b>Nomor Layanan :</b> ${item.nomor_layanan}</p>
+<p><b>Nama Pemilik :</b> ${item.nama_pemilik}</p>
+<p><b>Lokasi :</b> ${item.lokasi}</p>
+<p><b>Jenis Layanan :</b> ${item.jenis_layanan}</p>
+<p><b>Status :</b> ${item.status}</p>
 
 </div>
 
 `).join("");
+
+});
+
+
+document.getElementById("search-input")
+.addEventListener("keypress",function(e){
+
+if(e.key==="Enter"){
+document.getElementById("search-btn").click();
+}
 
 });
 
@@ -271,3 +273,4 @@ lucide.createIcons();
 
 </body>
 </html>
+```

@@ -11,6 +11,9 @@
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
 
+<!-- CSV parser -->
+<script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+
 <style>
 
 body{
@@ -104,7 +107,7 @@ Cari
 
 <i data-lucide="inbox" style="width:40px;height:40px;margin:auto;"></i>
 
-<p>Masukkan nomor layanan</p>
+<p>Masukkan Nomor layanan</p>
 
 </div>
 
@@ -159,33 +162,23 @@ let allData=[];
 const sheetURL="https://docs.google.com/spreadsheets/d/e/2PACX-1vSabRsCKk4xRAHNzpX25t5Bs2JAA-w1l2sycvl4AIQaYTe7BFFwBjQTiyxReGp3jp10u1PAVHNEK2bu/pub?output=csv";
 
 
-async function loadSpreadsheetData(){
+function loadSpreadsheetData(){
 
-const response=await fetch(sheetURL);
+Papa.parse(sheetURL,{
 
-const csv=await response.text();
+download:true,
 
-const rows=csv.split("\n").slice(1);
+header:true,
 
-allData=rows.map(row=>{
+complete:function(results){
 
-const col=row.split(",");
-
-return{
-
-nomor_layanan:col[0]||"",
-tanggal_diterima:col[1]||"",
-nama_pemilik:col[2]||"",
-lokasi:col[3]||"",
-jenis_layanan:col[4]||"",
-status:col[5]||"",
-keterangan:col[6]||""
-
-};
-
-});
+allData=results.data;
 
 renderTable();
+
+}
+
+});
 
 }
 
@@ -206,17 +199,17 @@ tbody.innerHTML=allData.map(item=>`
 
 <tr class="border-b hover:bg-blue-50">
 
-<td class="p-2 font-semibold">${item.nomor_layanan}</td>
+<td class="p-2 font-semibold">${item.Nomor Layanan || ""}</td>
 
-<td class="p-2">${item.nama_pemilik}</td>
+<td class="p-2">${item.Nama Pemilik || ""}</td>
 
-<td class="p-2">${item.jenis_layanan}</td>
+<td class="p-2">${item.Jenis Layanan || ""}</td>
 
 <td class="p-2">
 
-<span class="status-badge status-${item.status.toLowerCase().replace(/\s+/g,'-')}">
+<span class="status-badge status-${(item.status||"").toLowerCase().replace(/\s+/g,'-')}">
 
-${item.status}
+${item.status || ""}
 
 </span>
 
@@ -237,7 +230,9 @@ const value=document.getElementById("search-input").value.toLowerCase();
 
 const container=document.getElementById("results-container");
 
-const found=allData.filter(d=>d.nomor_layanan.toLowerCase().includes(value));
+const found=allData.filter(d=>
+(d.nomor_layanan||"").toLowerCase().includes(value)
+);
 
 if(found.length===0){
 
@@ -251,15 +246,15 @@ container.innerHTML=found.map(item=>`
 
 <div class="card-result">
 
-<p><b>Nomor:</b> ${item.nomor_layanan}</p>
+<p><b>Nomor:</b> ${item.Nomor Layanan}</p>
 
-<p><b>Nama:</b> ${item.nama_pemilik}</p>
+<p><b>Nama:</b> ${item.Nama Pemilik}</p>
 
-<p><b>Lokasi:</b> ${item.lokasi}</p>
+<p><b>Lokasi:</b> ${item.Lokasi}</p>
 
-<p><b>Jenis:</b> ${item.jenis_layanan}</p>
+<p><b>Jenis:</b> ${item.Jenis Layanan}</p>
 
-<p><b>Status:</b> ${item.status}</p>
+<p><b>Status:</b> ${item.Status}</p>
 
 </div>
 

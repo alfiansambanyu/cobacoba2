@@ -7,10 +7,10 @@
 
 <style>
 
-*{box-sizing:border-box;margin:0;padding:0;}
+*{box-sizing:border-box;margin:0;padding:0}
 
 body{
-font-family:Segoe UI,Roboto,Arial;
+font-family:Segoe UI,Arial;
 background:linear-gradient(135deg,#4f8edc,#2a5fa4);
 min-height:100vh;
 color:#333;
@@ -25,17 +25,16 @@ padding:30px 10px;
 }
 
 header img{
-height:120px;
+height:110px;
 margin-bottom:10px;
 }
 
 header h1{
 font-size:24px;
-margin:3px;
 }
 
 header p{
-font-size:16px;
+font-size:15px;
 }
 
 /* CONTAINER */
@@ -55,8 +54,6 @@ padding:25px;
 margin-bottom:20px;
 box-shadow:0 10px 25px rgba(0,0,0,0.15);
 }
-
-/* TITLE */
 
 .title{
 font-size:20px;
@@ -120,55 +117,36 @@ font-size:13px;
 font-weight:bold;
 }
 
-.Diterima{background:#e6cff2;}
-.Diproses{background:#fffc00;}
-.Selesai{background:#4cbb17;color:white;}
-.PerluPerbaikan{background:#ff0800;color:white;}
+/* WORKFLOW */
 
-/* TRACKING */
-
-.tracking{
-display:flex;
-justify-content:space-between;
-margin:30px 0;
-position:relative;
-}
-
-.tracking::before{
-content:'';
-position:absolute;
-top:18px;
-left:0;
-right:0;
-height:4px;
-background:#ddd;
-}
-
-.step{
-text-align:center;
-flex:1;
-}
-
-.circle{
-width:35px;
-height:35px;
-border-radius:50%;
-background:#ccc;
-margin:auto;
+.workflow{
 display:flex;
 align-items:center;
 justify-content:center;
-color:white;
+gap:10px;
+margin:25px 0;
+font-weight:bold;
 }
 
-.step.done .circle{background:#4cbb17;}
-.step.active .circle{background:#fffc00;}
-.step.error .circle{background:#ff0800;animation:shake .4s infinite alternate;}
-
-.step p{
-font-size:12px;
-margin-top:5px;
+.step{
+padding:10px 16px;
+border-radius:20px;
+background:#ddd;
+font-size:14px;
+animation:pulse 2s infinite;
 }
+
+.arrow{
+font-size:20px;
+font-weight:bold;
+}
+
+/* COLORS */
+
+.diterima{background:#e6cff2}
+.proses{background:#fffc00}
+.selesai{background:#4cbb17;color:white}
+.perbaikan{background:#ff0800;color:white}
 
 /* STATISTICS */
 
@@ -191,12 +169,12 @@ animation:pulse 2s infinite;
 font-size:28px;
 }
 
-.stat.diterima{background:#e6cff2;}
-.stat.proses{background:#fffc00;}
-.stat.selesai{background:#4cbb17;color:white;}
-.stat.perbaikan{background:#ff0800;color:white;}
+.stat.diterima{background:#e6cff2}
+.stat.proses{background:#fffc00}
+.stat.selesai{background:#4cbb17;color:white}
+.stat.perbaikan{background:#ff0800;color:white}
 
-/* BUTTON FORM */
+/* FORM BUTTON */
 
 .form-btn a{
 display:block;
@@ -219,17 +197,12 @@ margin-top:20px;
 padding-bottom:20px;
 }
 
-/* ANIMATIONS */
+/* ANIMATION */
 
 @keyframes pulse{
 0%{transform:scale(1)}
 50%{transform:scale(1.05)}
 100%{transform:scale(1)}
-}
-
-@keyframes shake{
-0%{transform:translateX(-2px)}
-100%{transform:translateX(2px)}
 }
 
 </style>
@@ -303,7 +276,7 @@ Ajukan Permohonan Tera/Tera Ulang
 </div>
 
 <footer>
-© 2026 Dinas Perdagangan, Koperasi dan Usaha Mikro Kabupaten Bojonegoro
+© 2026 Dinas Perdagangan Koperasi dan Usaha Mikro Kabupaten Bojonegoro
 </footer>
 
 <script>
@@ -316,40 +289,41 @@ function parseCSV(text){
 return text.split("\n").map(r=>r.split(","))
 }
 
-function tracking(status){
+/* WORKFLOW */
+
+function workflow(status){
 
 status=status.toLowerCase()
 
-let s1="",s2="",s3=""
+let step1="step"
+let step2="step"
+let step3="step"
 
-if(status.includes("diterima")) s1="active"
-if(status.includes("diproses")){s1="done";s2="active"}
-if(status.includes("selesai")){s1="done";s2="done";s3="active"}
-if(status.includes("perbaikan")){s1="done";s2="done";s3="error"}
+if(status.includes("diterima")) step1+=" diterima"
+if(status.includes("diproses")){step1+=" diterima";step2+=" proses"}
+if(status.includes("selesai")){step1+=" diterima";step2+=" proses";step3+=" selesai"}
+if(status.includes("perbaikan")){step1+=" diterima";step2+=" proses";step3+=" perbaikan"}
 
 return`
 
-<div class="tracking">
+<div class="workflow">
 
-<div class="step ${s1}">
-<div class="circle">1</div>
-<p>Diterima</p>
-</div>
+<div class="${step1}">Diterima</div>
+<div class="arrow">➜</div>
 
-<div class="step ${s2}">
-<div class="circle">2</div>
-<p>Diproses</p>
-</div>
+<div class="${step2}">Diproses</div>
+<div class="arrow">➜</div>
 
-<div class="step ${s3}">
-<div class="circle">3</div>
-<p>${status.includes("perbaikan")?"Perbaikan":"Selesai"}</p>
+<div class="${step3}">
+${status.includes("perbaikan")?"Perbaikan":"Selesai"}
 </div>
 
 </div>
 
 `
 }
+
+/* LOAD DATA */
 
 async function init(){
 
@@ -358,32 +332,40 @@ const text=await res.text()
 
 sheetData=parseCSV(text)
 
-hitungStatistik(sheetData)
+hitungStatistik()
 
 }
 
-function hitungStatistik(data){
+/* STATISTIK BULAN BERJALAN */
+
+function hitungStatistik(){
 
 let diterima=0
 let proses=0
 let selesai=0
 let perbaikan=0
 
-const now=new Date()
-const month=now.getMonth()
-const year=now.getFullYear()
+const today=new Date()
+const bulan=today.getMonth()+1
+const tahun=today.getFullYear()
 
-for(let i=1;i<data.length;i++){
+for(let i=1;i<sheetData.length;i++){
 
-let tanggal=data[i][1]
+let tanggal=sheetData[i][1]
 
 if(!tanggal) continue
 
-let d=new Date(tanggal)
+let parts=tanggal.split("/")
 
-if(d.getMonth()==month && d.getFullYear()==year){
+if(parts.length<3) continue
 
-let status=(data[i][6]||"").toLowerCase()
+let d=parseInt(parts[0])
+let m=parseInt(parts[1])
+let y=parseInt(parts[2])
+
+if(m==bulan && y==tahun){
+
+let status=(sheetData[i][6]||"").toLowerCase()
 
 if(status.includes("diterima")) diterima++
 if(status.includes("diproses")) proses++
@@ -401,6 +383,8 @@ document.getElementById("sPerbaikan").innerText=perbaikan
 
 }
 
+/* SEARCH */
+
 function cekLayanan(){
 
 const val=document.getElementById("search").value.toLowerCase()
@@ -413,7 +397,6 @@ let nomor=(sheetData[i][0]||"").toLowerCase()
 if(nomor.includes(val)){
 
 let status=sheetData[i][6]
-let statusClass=status.replace(/\s/g,'')
 
 hasil.innerHTML=`
 
@@ -430,11 +413,11 @@ hasil.innerHTML=`
 <div class="row">
 <div class="label">Status</div>
 <div class="value">
-<span class="status ${statusClass}">${status}</span>
+<span class="status">${status}</span>
 </div>
 </div>
 
-${tracking(status)}
+${workflow(status)}
 
 <div class="row">
 <div class="label">Jadwal Pengujian</div>

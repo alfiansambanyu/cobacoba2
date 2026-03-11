@@ -106,8 +106,8 @@ position:relative;
 .progress-line{
 position:absolute;
 top:25px;
-left:12.5%;
-width:75%;
+left:25px;
+right:25px;
 height:6px;
 background:#ddd;
 }
@@ -115,13 +115,11 @@ background:#ddd;
 .progress{
 position:absolute;
 top:25px;
-left:12.5%;
+left:25px;
 height:6px;
 background:#4cbb17;
 transition:0.4s;
-max-width:75%;
 }
-
 .steps{
 display:flex;
 justify-content:space-between;
@@ -294,34 +292,26 @@ let label4="Selesai"
 /* DITERIMA */
 
 if(status.includes("diterima")){
-progress="20%"
+progress="0%"
 s1+=" active"
 }
 
-/* DIJADWALKAN */
-
 if(status.includes("dijadwalkan")){
-progress="40%"
+progress="33%"
 s2+=" active"
 }
 
-/* DIUJI */
-
 if(status.includes("diuji")){
-progress="70%"
+progress="66%"
 s3+=" active"
 }
 
-/* SELESAI */
-
 if(status.includes("selesai")){
-progress="75%"
+progress="100%"
 }
 
-/* PERBAIKAN */
-
 if(status.includes("perbaikan")){
-progress="75%"
+progress="100%"
 icon4="⚠"
 s4="circle perbaikan active"
 label4="Perlu Perbaikan"

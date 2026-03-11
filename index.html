@@ -16,8 +16,6 @@ min-height:100vh;
 color:#333;
 }
 
-/* HEADER */
-
 header{
 text-align:center;
 color:white;
@@ -29,15 +27,11 @@ height:110px;
 margin-bottom:10px;
 }
 
-/* CONTAINER */
-
 .container{
 max-width:900px;
 margin:auto;
 padding:10px;
 }
-
-/* CARD */
 
 .card{
 background:white;
@@ -65,8 +59,6 @@ border-radius:8px;
 border:1px solid #ccc;
 margin-bottom:10px;
 }
-
-/* BUTTON */
 
 button{
 width:100%;
@@ -99,25 +91,33 @@ margin-top:3px;
 .workflow{
 display:flex;
 align-items:center;
-justify-content:center;
-gap:10px;
+gap:14px;
 margin:30px 0;
 font-weight:bold;
+justify-content:flex-start;
 }
 
 .step{
-padding:10px 16px;
-border-radius:20px;
-font-size:14px;
-animation:pulse 2s infinite;
+padding:14px 22px;
+border-radius:25px;
+font-size:18px;
 }
 
 .arrow{
-font-size:22px;
+font-size:28px;
 font-weight:bold;
 }
 
 /* COLORS */
+
+.done{
+background:#4cbb17;
+color:white;
+}
+
+.active{
+animation:pulse 1.5s infinite;
+}
 
 .diterima{background:#e6cff2}
 .proses{background:#fffc00}
@@ -138,7 +138,6 @@ padding:20px;
 border-radius:12px;
 text-align:center;
 font-weight:bold;
-animation:pulse 2s infinite;
 }
 
 .stat h2{font-size:28px}
@@ -148,7 +147,7 @@ animation:pulse 2s infinite;
 .stat.selesai{background:#4cbb17;color:white}
 .stat.perbaikan{background:#ff0800;color:white}
 
-/* BUTTON FORM */
+/* FORM BUTTON */
 
 .form-btn a{
 display:block;
@@ -171,11 +170,9 @@ margin-top:20px;
 padding-bottom:20px;
 }
 
-/* ANIMATION */
-
 @keyframes pulse{
 0%{transform:scale(1)}
-50%{transform:scale(1.05)}
+50%{transform:scale(1.15)}
 100%{transform:scale(1)}
 }
 
@@ -267,30 +264,48 @@ document.getElementById("search").addEventListener("keypress",function(e){
 if(e.key==="Enter"){cekLayanan()}
 })
 
-/* WORKFLOW PANAH */
+/* WORKFLOW */
 
 function workflow(status){
 
 status=status.toLowerCase()
 
-let s1="step"
-let s2="step"
-let s3="step"
+let s1="step diterima"
+let s2="step proses"
+let s3="step selesai"
 
-if(status.includes("diterima")) s1+=" diterima"
-if(status.includes("diproses")){s1+=" diterima";s2+=" proses"}
-if(status.includes("selesai")){s1+=" diterima";s2+=" proses";s3+=" selesai"}
-if(status.includes("perbaikan")){s1+=" diterima";s2+=" proses";s3+=" perbaikan"}
+if(status.includes("diterima")){
+s1+=" active"
+}
+
+if(status.includes("diproses")){
+s1+=" done"
+s2+=" active"
+}
+
+if(status.includes("selesai")){
+s1+=" done"
+s2+=" done"
+s3+=" active"
+}
+
+if(status.includes("perbaikan")){
+s1+=" done"
+s2+=" done"
+s3="step perbaikan active"
+}
 
 return`
 
 <div class="workflow">
 
 <div class="${s1}">Diterima</div>
-<div class="arrow">➡</div>
+
+<div class="arrow">➜</div>
 
 <div class="${s2}">Diproses</div>
-<div class="arrow">➡</div>
+
+<div class="arrow">➜</div>
 
 <div class="${s3}">
 ${status.includes("perbaikan")?"Perbaikan":"Selesai"}
@@ -314,25 +329,6 @@ hitungStatistik()
 
 }
 
-/* PARSE DATE FLEXIBLE */
-
-function parseDate(str){
-
-if(!str) return null
-
-if(str.includes("/")){
-let p=str.split("/")
-return new Date(p[2],p[1]-1,p[0])
-}
-
-if(str.includes("-")){
-return new Date(str)
-}
-
-return new Date(str)
-
-}
-
 /* STATISTIK */
 
 function hitungStatistik(){
@@ -346,11 +342,15 @@ let now=new Date()
 
 for(let i=1;i<sheetData.length;i++){
 
-let tanggal=parseDate(sheetData[i][1])
+let t=sheetData[i][1]
 
-if(!tanggal) continue
+if(!t) continue
 
-if(tanggal.getMonth()==now.getMonth() && tanggal.getFullYear()==now.getFullYear()){
+let d=new Date(t)
+
+if(isNaN(d)) continue
+
+if(d.getMonth()==now.getMonth() && d.getFullYear()==now.getFullYear()){
 
 let status=(sheetData[i][6]||"").toLowerCase()
 
@@ -398,16 +398,16 @@ hasil.innerHTML=`
 </div>
 
 <div class="row">
+<div class="label">Jadwal Pengujian</div>
+<div class="value">${sheetData[i][2]}</div>
+</div>
+
+<div class="row">
 <div class="label">Status</div>
 <div class="value">${status}</div>
 </div>
 
 ${workflow(status)}
-
-<div class="row">
-<div class="label">Jadwal Pengujian</div>
-<div class="value">${sheetData[i][2]}</div>
-</div>
 
 <div class="row">
 <div class="label">Lokasi</div>

@@ -127,6 +127,8 @@ background:#ddd;
 position:absolute;
 top:22px;
 left:16.6%;
+width:0;
+max-width:66.6%;
 height:5px;
 background:#4cbb17;
 transition:0.4s;
@@ -330,28 +332,28 @@ let label3="Selesai"
 /* DITERIMA */
 
 if(status.includes("diterima")){
-progress="30%"
+progress="22%"
 s1+=" active"
 }
 
 /* DIPROSES */
 
 if(status.includes("diproses")){
-progress="50%"
+progress="44%"
 s2+=" active"
 }
 
 /* SELESAI */
 
 if(status.includes("selesai")){
-progress="100%"
+progress="66.6%"
 s3+=" active"
 }
 
 /* PERLU PERBAIKAN */
 
 if(status.includes("perbaikan")){
-progress="100%"
+progress="66.6%"
 icon3="⚠"
 s3="circle perbaikan active"
 label3="Perlu Perbaikan"

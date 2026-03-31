@@ -132,7 +132,7 @@ position:relative;
 
 .step{
 text-align:center;
-width:25%;
+width:20%;
 }
 
 /* ICON */
@@ -291,49 +291,94 @@ let progress="0%"
 let s1="circle diterima"
 let s2="circle jadwal"
 let s3="circle uji"
-let s4="circle selesai"
+let s4="circle jadwal"
+let s5="circle selesai"
 
 let icon1="📝"
-let icon2="📅"
+let icon2="🔍"
 let icon3="🧪"
-let icon4="✔"
+let icon4="📄"
+let icon5="✔"
 
-let label4="Selesai"
+let label4="Penerbitan SKHP"
 
-/* DITERIMA */
-
-if(status.includes("diterima")){
+/* PERMOHONAN MASUK */
+if(status.includes("masuk") || status.includes("diterima")){
 progress="0%"
 s1+=" active"
 }
 
-/* DIJADWALKAN */
-
-if(status.includes("dijadwalkan")){
-progress="33%"
+/* VERIFIKASI */
+if(status.includes("verifikasi") || status.includes("pemeriksaan")){
+progress="25%"
 s2+=" active"
 }
 
-/* DIUJI */
-
-if(status.includes("diuji")){
-progress="66%"
+/* PENGUJIAN */
+if(status.includes("uji")){
+progress="50%"
 s3+=" active"
 }
 
-/* SELESAI */
+/* PENERBITAN */
+if(status.includes("penerbitan") || status.includes("skhp")){
+progress="75%"
+s4+=" active"
+}
 
+/* SELESAI */
 if(status.includes("selesai")){
 progress="100%"
+s5+=" active"
 }
 
 /* PERBAIKAN */
-
 if(status.includes("perbaikan")){
-progress="100%"
+progress="75%"
 s4="circle perbaikan active"
 icon4="⚠"
 label4="Perlu Perbaikan"
+}
+
+return`
+
+<div class="tracking">
+
+<div class="progress-line"></div>
+<div class="progress" style="width:calc(${progress} - 25px)"></div>
+
+<div class="steps">
+
+<div class="step">
+<div class="${s1}">${icon1}</div>
+<div class="label-step">Permohonan Masuk</div>
+</div>
+
+<div class="step">
+<div class="${s2}">${icon2}</div>
+<div class="label-step">Verifikasi</div>
+</div>
+
+<div class="step">
+<div class="${s3}">${icon3}</div>
+<div class="label-step">Pengujian</div>
+</div>
+
+<div class="step">
+<div class="${s4}">${icon4}</div>
+<div class="label-step">${label4}</div>
+</div>
+
+<div class="step">
+<div class="${s5}">${icon5}</div>
+<div class="label-step">Selesai</div>
+</div>
+
+</div>
+
+</div>
+
+`
 }
 
 return`

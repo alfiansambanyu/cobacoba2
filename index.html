@@ -20,8 +20,6 @@ min-height:100vh;
 color:#333;
 }
 
-/* HEADER */
-
 header{
 text-align:center;
 color:white;
@@ -33,15 +31,11 @@ height:120px;
 margin-bottom:10px;
 }
 
-/* CONTAINER */
-
 .container{
 max-width:900px;
 margin:auto;
 padding:10px;
 }
-
-/* CARD */
 
 .card{
 background:white;
@@ -58,8 +52,6 @@ border-bottom:2px solid #3b82c4;
 padding-bottom:6px;
 margin-bottom:12px;
 }
-
-/* INPUT */
 
 input{
 width:100%;
@@ -81,8 +73,6 @@ font-size:16px;
 font-weight:bold;
 cursor:pointer;
 }
-
-/* DATA */
 
 .row{margin-bottom:10px}
 
@@ -120,7 +110,7 @@ left:25px;
 height:6px;
 background:#4cbb17;
 border-radius:4px;
-transition:0.4s;
+transition:width 0.6s ease;
 max-width:calc(100% - 50px);
 }
 
@@ -135,8 +125,6 @@ text-align:center;
 width:20%;
 }
 
-/* ICON */
-
 .circle{
 width:50px;
 height:50px;
@@ -148,11 +136,8 @@ margin:auto;
 font-size:22px;
 color:white;
 font-weight:bold;
-position:relative;
-z-index:2;
+box-shadow:0 4px 10px rgba(0,0,0,0.2);
 }
-
-/* LABEL */
 
 .label-step{
 margin-top:6px;
@@ -162,33 +147,12 @@ font-weight:bold;
 
 /* COLORS */
 
-.diterima{
-background:#00ffbc
-color:#000;
-}
-
-.jadwal{
-background:#ff7034;
-}
-
-.uji{
-background:#fffc00;
-color:#000;
-}
-
-.selesai{
-background:#4cbb17;
-}
-
-.perbaikan{
-background:#ff0800;
-}
-.penerbitan{
-background:#e6cff2;
-color:#000;
-}
-
-/* ANIMATION */
+.diterima{background:#00ffbc;color:#000;}
+.jadwal{background:#ff7034;}
+.uji{background:#fffc00;color:#000;}
+.selesai{background:#4cbb17;}
+.perbaikan{background:#ff0800;color:#fff;}
+.penerbitan{background:#e6cff2;color:#000;}
 
 .active{
 animation:pulse 1.3s infinite;
@@ -200,8 +164,6 @@ animation:pulse 1.3s infinite;
 100%{transform:scale(1)}
 }
 
-/* FORM BUTTON */
-
 .form-btn a{
 display:block;
 background:#FF2800;
@@ -211,15 +173,7 @@ border-radius:8px;
 text-decoration:none;
 text-align:center;
 font-weight:bold;
-font-size:16px;
-box-shadow:0 4px 10px rgba(0,0,0,0.2);
 }
-
-.form-btn a:hover{
-background:#d61f00;
-}
-
-/* FOOTER */
 
 footer{
 text-align:center;
@@ -273,19 +227,26 @@ let sheetData=[]
 const sheetURL="https://docs.google.com/spreadsheets/d/e/2PACX-1vSabRsCKk4xRAHNzpX25t5Bs2JAA-w1l2sycvl4AIQaYTe7BFFwBjQTiyxReGp3jp10u1PAVHNEK2bu/pub?gid=1685468197&single=true&output=csv&t="+Date.now()
 
 function parseCSV(text){
-return text.split("\n").map(r=>r.split(","))
+return text.split("\n").map(row => {
+return row.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/)
+})
 }
 
 document.getElementById("search").addEventListener("keypress",function(e){
 if(e.key==="Enter"){cekLayanan()}
 })
 
+async function init(){
+const res=await fetch(sheetURL)
+const text=await res.text()
+sheetData=parseCSV(text)
+}
+
 function workflow(status){
 
-status = (status || "").toLowerCase()
+status=(status||"").toLowerCase()
 
 let progress="0%"
-
 let s1="circle diterima"
 let s2="circle jadwal"
 let s3="circle uji"
@@ -300,29 +261,12 @@ let icon5="✔"
 
 let label4="Penerbitan SKHP"
 
-/* PERMOHONAN MASUK */
-if(status.includes("masuk") || status.includes("diterima")){
-progress="0%"
-s1+=" active"
-}
-else if(status.includes("verifikasi") || status.includes("pemeriksaan")){
-progress="25%"
-s2+=" active"
-}
-else if(status.includes("uji")){
-progress="50%"
-s3+=" active"
-}
-else if(status.includes("penerbitan") || status.includes("skhp")){
-progress="75%"
-s4+=" active"
-}
-else if(status.includes("selesai")){
-progress="100%"
-s5+=" active"
-}
+if(status.includes("masuk")||status.includes("diterima")){progress="0%";s1+=" active"}
+else if(status.includes("verifikasi")){progress="25%";s2+=" active"}
+else if(status.includes("uji")){progress="50%";s3+=" active"}
+else if(status.includes("penerbitan")){progress="75%";s4+=" active"}
+else if(status.includes("selesai")){progress="100%";s5+=" active"}
 
-/* PERBAIKAN */
 if(status.includes("perbaikan")){
 progress="75%"
 s4="circle perbaikan active"
@@ -331,11 +275,9 @@ label4="Perlu Perbaikan"
 }
 
 return `
-
 <div class="tracking">
-
 <div class="progress-line"></div>
-<div class="progress" style="width:calc(${progress} - 25px)"></div>
+<div class="progress" style="width:${progress}"></div>
 
 <div class="steps">
 
@@ -365,88 +307,59 @@ return `
 </div>
 
 </div>
-
 </div>
-
 `
 }
 
-async function init(){
-try{
-const res=await fetch(sheetURL)
-const text=await res.text()
-sheetData=parseCSV(text)
-}catch(e){
-console.error("Gagal load data", e)
-}
-}
+async function cekLayanan(){
 
-function cekLayanan(){
-
-let val=document.getElementById("search").value.toLowerCase()
 let hasil=document.getElementById("hasil")
+let input=document.getElementById("search").value.trim().toLowerCase()
 
-if(!val){
+if(!input){
 hasil.innerHTML="<b>Masukkan nomor layanan</b>"
 return
 }
 
+if(sheetData.length===0){
+hasil.innerHTML="Memuat data..."
+await init()
+}
+
+hasil.innerHTML="Mencari data..."
+
 for(let i=1;i<sheetData.length;i++){
 
-let nomor=(sheetData[i][0]||"").toLowerCase()
+let nomor=(sheetData[i][0]||"").trim().toLowerCase()
 
-if(nomor.includes(val)){
+/* EXACT MATCH (tidak case-sensitive) */
+if(nomor === input){
 
-let status=sheetData[i][6] || "-"
+let status=sheetData[i][6]||"-"
 
 hasil.innerHTML=`
 
-<div class="row">
-<div class="label">Nomor Layanan</div>
-<div class="value">${sheetData[i][0] || "-"}</div>
-</div>
-
-<div class="row">
-<div class="label">Nama Pemilik</div>
-<div class="value">${sheetData[i][1] || "-"}</div>
-</div>
-
-<div class="row">
-<div class="label">Jenis Layanan</div>
-<div class="value">${sheetData[i][5] || "-"}</div>
-</div>
-
-<div class="row">
-<div class="label">Status</div>
-<div class="value">${status}</div>
-</div>
+<div class="row"><div class="label">Nomor Layanan</div><div class="value">${sheetData[i][0]}</div></div>
+<div class="row"><div class="label">Nama Pemilik</div><div class="value">${sheetData[i][1]}</div></div>
+<div class="row"><div class="label">Jenis Layanan</div><div class="value">${sheetData[i][5]}</div></div>
+<div class="row"><div class="label">Status</div><div class="value">${status}</div></div>
 
 ${workflow(status)}
 
-<div class="row">
-<div class="label">Jadwal Pengujian</div>
-<div class="value">${sheetData[i][3] || "-"}</div>
-</div>
-
-<div class="row">
-<div class="label">Lokasi</div>
-<div class="value">${sheetData[i][4] || "-"}</div>
-</div>
-
-<div class="row">
-<div class="label">Keterangan</div>
-<div class="value">${sheetData[i][8] || "-"}</div>
-</div>
-
+<div class="row"><div class="label">Jadwal Pengujian</div><div class="value">${sheetData[i][3]}</div></div>
+<div class="row"><div class="label">Lokasi</div><div class="value">${sheetData[i][4]}</div></div>
+<div class="row"><div class="label">Keterangan</div><div class="value">${sheetData[i][8]}</div></div>
 `
+
+document.getElementById("search").focus()
+document.getElementById("search").select()
 
 return
 }
-
 }
 
 hasil.innerHTML="<b>Nomor layanan tidak ditemukan</b>"
-
+document.getElementById("search").focus()
 }
 
 init()

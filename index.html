@@ -314,7 +314,11 @@ return `
 async function cekLayanan(){
 
 let hasil=document.getElementById("hasil")
-let input=document.getElementById("search").value.trim().toLowerCase()
+let input=document.getElementById("search").value
+.replace(/"/g,"")
+.replace(/\r/g,"")
+.trim()
+.toLowerCase()
 
 if(!input){
 hasil.innerHTML="<b>Masukkan nomor layanan</b>"
@@ -330,10 +334,14 @@ hasil.innerHTML="Mencari data..."
 
 for(let i=1;i<sheetData.length;i++){
 
-let nomor=(sheetData[i][0]||"").trim().toLowerCase()
+let nomor=(sheetData[i][0]||"")
+.replace(/"/g,"")
+.replace(/\r/g,"")  
+.trim()
+.toLowerCase()
 
 /* EXACT MATCH (tidak case-sensitive) */
-if(nomor === input){
+if(nomor.replace(/-/g,"") === input.replace(/-/g,"")){
 
 let status=sheetData[i][6]||"-"
 
